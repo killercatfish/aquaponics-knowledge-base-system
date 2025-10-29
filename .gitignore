@@ -1,0 +1,69 @@
+# AKBS .gitignore
+# Keep your code public, your data private
+
+# ChromaDB Knowledge Base (KEEP PRIVATE - contains your textbook content)
+data/
+knowledge_db/
+*.db
+*.sqlite
+*.duckdb
+*.parquet
+
+# Your source documents (KEEP PRIVATE - your PDFs and processed markdown)
+processed-chapters/
+raw-pdfs/
+textbooks/
+2-Processed-Chapters/
+3-Topic-Guides/
+4-Quick-References/
+1-Original-Chapters/
+
+# Test artifacts
+test_db/
+test_sample.md
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment variables (if you add any)
+.env
+.env.local
