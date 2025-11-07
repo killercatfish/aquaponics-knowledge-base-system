@@ -260,44 +260,64 @@ class AKBSIngester:
 
 
 def main():
-    """Example usage"""
-    
-    # Initialize ingester
+    """Ingest all RAS knowledge base markdown files"""
     ingester = AKBSIngester(db_path="./data/knowledge_db")
     
-    # Example 1: Ingest a single file
-    # ingester.ingest_file(
-    #     Path("path/to/Chapter-01-Introduction-Readable.md"),
-    #     source_name="RAS Textbook"
-    # )
+    print("\n" + "=" * 60)
+    print("INGESTING RAS EXPERT KNOWLEDGE BASE")
+    print("=" * 60 + "\n")
     
-    # Example 2: Ingest entire directory
-    # ingester.ingest_directory(
-    #     Path("./2-Processed-Chapters"),
-    #     source_name="RAS Textbook"
-    # )
+    base_path = Path("./processed-chapters")
     
-    # Example 3: Query the knowledge base
-    print("\n" + "="*60)
-    print("QUERY INTERFACE READY")
-    print("="*60)
-    
-    example_queries = [
-        "What is the optimal pH for lettuce?",
-        "How do I control water temperature?",
-        "What are the nitrogen cycle stages?",
-        "What dissolved oxygen level do fish need?"
+    # Define subdirectories to process
+    directories = [
+        "0-Master-Files",
+        "2-Processed-Chapters", 
+        "3-Topic-Guides",
+        "4-Quick-References",
+        "5-Diagrams",
+        "6-AI-Tools"
     ]
     
-    print("\nExample queries you can try:")
-    for i, q in enumerate(example_queries, 1):
-        print(f"  {i}. {q}")
+    total_files = 0
     
-    print("\nTo use this script:")
-    print("  1. Update the paths in the main() function")
-    print("  2. Run: python akbs_ingest_markdown.py")
-    print("  3. Query your knowledge base!")
+    for subdir in directories:
+        full_path = base_path / subdir
+        if full_path.exists():
+            print(f"\n{'='*60}")
+            print(f"Processing: {subdir}")
+            print('='*60)
+            
+            # Count files first
+            md_files = list(full_path.glob("*.md"))
+            print(f"Found {len(md_files)} markdown files\n")
+            
+            ingester.ingest_directory(
+                full_path, 
+                source_name=f"RAS-{subdir}"
+            )
+            total_files += len(md_files)
     
+    # Also ingest root-level files (README, etc)
+    print(f"\n{'='*60}")
+    print("Processing: Root-level documentation")
+    print('='*60)
+    root_files = [f for f in base_path.glob("*.md") if f.is_file()]
+    if root_files:
+        for file in root_files:
+            print(f"Processing: {file.name}")
+            ingester.ingest_file(file, source_name="RAS-Root-Docs")
+        total_files += len(root_files)
+    
+    print("\n" + "=" * 60)
+    print("✓ INGESTION COMPLETE!")
+    print("=" * 60)
+    print(f"Total files processed: {total_files}")
+    print(f"Database location: ./data/knowledge_db")
+    print("\nYou can now query the knowledge base with:")
+    print("  python akbs_query.py")
+    print("=" * 60 + "\n")
+
 
 if __name__ == "__main__":
     main()
